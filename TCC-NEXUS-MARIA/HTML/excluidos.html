@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Excluídos</title>
+    <link rel="stylesheet" href="../CSS/excluidos.css">
+    <link rel="stylesheet" href="../CSS/notification.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2 class="menu-title">Nexus Menu</h2>
+        <ul class="menu-list">
+            <li><a href="feed.html"><i class="fas fa-compass"></i> Explorar</a></li>
+            <li><a href="amigos.html"><i class="fas fa-user-friends"></i> Amigos</a></li>
+            <li><a href="calendario.html"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+            <li><a href="salvos.html"><i class="fas fa-bookmark"></i> Salvos</a></li>
+            <li><a href="atividades.html"><i class="fas fa-running"></i> Atividades</a></li>
+            <li><a href="configuracao.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+        </ul>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <header class="main-header">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Pesquisar excluídos...">
+            </div>
+            <div class="header-logo"><span class="logo-text">NEXUS</span></div>
+            <div class="header-profile">
+                <div class="header-profile-pic"></div>
+            </div>
+        </header>
+
+        <div class="feed-header">Posts Excluídos</div>
+
+        <!-- Botão voltar -->
+        <a href="salvos.html" class="back-btn"><i class="fas fa-arrow-left"></i> Voltar para Salvos</a>
+
+        <!-- Container de posts excluídos -->
+        <div class="deleted-container" id="deleted-container">
+            <!-- Posts excluídos serão listados aqui dinamicamente -->
+        </div>
+    </div>
+
+    <!-- Modal de Notificação -->
+    <div id="notification-modal" class="notification-modal">
+        <div class="notification-content">
+            <span class="notification-close">&times;</span>
+            <p id="notification-text"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const deletedPosts = [
+        {
+            title: "Como Aprender React em 2025",
+            text: "Dicas e truques para dominar React de forma prática e rápida."
+        },
+        {
+            title: "Design Minimalista: Guia Completo",
+            text: "Aprenda como aplicar menos elementos e mais impacto visual."
+        },
+        {
+            title: "Inteligência Artificial na Prática",
+            text: "Exemplos de aplicações de IA no cotidiano e mercado de trabalho."
+        }
+    ];
+
+    const container = document.getElementById('deleted-container');
+    const notificationModal = document.getElementById('notification-modal');
+    const notificationText = document.getElementById('notification-text');
+    const notificationClose = document.querySelector('.notification-close');
+
+    // Função para mostrar notificação
+    function showNotification(message){
+        notificationText.textContent = message;
+        notificationModal.style.display = 'flex';
+        setTimeout(()=> {
+            notificationModal.style.display = 'none';
+        }, 3000);
+    }
+
+    notificationClose.addEventListener('click', ()=> notificationModal.style.display = 'none');
+
+    // Criar cards dos posts excluídos
+    deletedPosts.forEach((post, index)=>{
+        const card = document.createElement('div');
+        card.classList.add('saved-card');
+        card.dataset.id = index;
+
+        card.innerHTML = `
+            <div class="saved-image"></div>
+            <div class="saved-info">
+                <h3>${post.title}</h3>
+                <p>${post.text}</p>
+            </div>
+            <i class="fas fa-trash-alt restore-icon"></i>
+        `;
+        container.appendChild(card);
+    });
+
+    // Restaurar post
+    container.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('restore-icon')){
+            const card = e.target.closest('.saved-card');
+            card.remove();
+            showNotification('Post restaurado para Salvos!');
+        }
+    });
+</script>
+</body>
+</html>

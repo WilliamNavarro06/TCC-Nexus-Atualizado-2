@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Chat</title>
+    <link rel="stylesheet" href="../CSS/chat.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2 class="menu-title">Nexus Menu</h2>
+            <ul class="menu-list">
+                <li><a href="feed.html"><i class="fas fa-compass"></i> Explorar</a></li>
+                <li><a href="amigos.html"><i class="fas fa-user-friends"></i> Amigos</a></li>
+                <li><a href="calendario.html"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+                <li><a href="salvos.html"><i class="fas fa-bookmark"></i> Salvos</a></li>
+                <li><a href="atividades.html"><i class="fas fa-running"></i> Atividades</a></li>
+                <li><a href="configuracao.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            </ul>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <header class="main-header">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar chats...">
+                </div>
+                <div class="header-logo"><span class="logo-text">NEXUS</span></div>
+                <div class="header-profile">
+                    <div class="header-profile-pic"></div>
+                </div>
+            </header>
+
+            <div class="feed-header">Chat</div>
+
+            <div class="feed-container chat-container">
+                <div class="chat-header">
+                    <div class="chat-profile-pic"></div>
+                    <div class="chat-user-info">
+                        <div id="chat-username">Nome do Amigo</div>
+                        <div id="chat-nick">@nick</div>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message received">Oi! Como você está?</div>
+                    <div class="message sent">Estou bem, e você?</div>
+                </div>
+
+                <div class="chat-input-area">
+                    <i class="far fa-smile"></i>
+                    <i class="fas fa-paperclip"></i>
+                    <input type="text" id="chat-input" placeholder="Digite uma mensagem...">
+                    <i class="fas fa-paper-plane" id="send-btn"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name') || "Amigo";
+        const nick = params.get('nick') || "@nick";
+
+        document.getElementById('chat-username').textContent = name;
+        document.getElementById('chat-nick').textContent = nick;
+
+        const sendBtn = document.getElementById('send-btn');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        sendBtn.addEventListener('click', () => {
+            const msg = chatInput.value.trim();
+            if(msg !== "") {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message','sent');
+                messageDiv.textContent = msg;
+                chatMessages.appendChild(messageDiv);
+                chatInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+
+        chatInput.addEventListener('keydown', (e)=>{
+            if(e.key === 'Enter') sendBtn.click();
+        });
+    </script>
+</body>
+</html>

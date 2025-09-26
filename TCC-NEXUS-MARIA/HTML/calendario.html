@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Calendário</title>
+    <link rel="stylesheet" href="../CSS/calendario.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Menu Lateral -->
+        <div class="sidebar">
+            <h2 class="menu-title">Nexus Menu</h2>
+            <ul class="menu-list">
+                <li><a href="feed.html"><i class="fas fa-compass"></i> Explorar</a></li>
+                <li><a href="amigos.html"><i class="fas fa-user-friends"></i> Amigos</a></li>
+                <li><a href="calendario.html" class="active-link-item"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+                <li><a href="salvos.html"><i class="fas fa-bookmark"></i> Salvos</a></li>
+                <li><a href="atividades.html"><i class="fas fa-running"></i> Atividades</a></li>
+                <li><a href="configuracao.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            </ul>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <!-- Cabeçalho -->
+            <header class="main-header">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar eventos...">
+                </div>
+                <div class="header-logo">
+                    <span class="logo-text">NEXUS</span>
+                </div>
+                <div class="header-profile">
+                    <div class="header-profile-pic"></div>
+                </div>
+            </header>
+
+            <div class="feed-header">Calendário</div>
+
+            <!-- Calendário -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="month-year">Setembro 2025</h2>
+                    <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="day-name">Dom</div>
+                    <div class="day-name">Seg</div>
+                    <div class="day-name">Ter</div>
+                    <div class="day-name">Qua</div>
+                    <div class="day-name">Qui</div>
+                    <div class="day-name">Sex</div>
+                    <div class="day-name">Sáb</div>
+
+                    <!-- Dias do mês (1 a 30) -->
+                    <div class="day" data-day="1">1</div>
+                    <div class="day" data-day="2">2</div>
+                    <div class="day" data-day="3">3</div>
+                    <div class="day" data-day="4">4</div>
+                    <div class="day" data-day="5">5</div>
+                    <div class="day" data-day="6">6</div>
+                    <div class="day" data-day="7">7</div>
+                    <div class="day" data-day="8">8</div>
+                    <div class="day" data-day="9">9</div>
+                    <div class="day" data-day="10">10</div>
+                    <div class="day" data-day="11">11</div>
+                    <div class="day" data-day="12">12</div>
+                    <div class="day" data-day="13">13</div>
+                    <div class="day" data-day="14">14</div>
+                    <div class="day" data-day="15">15</div>
+                    <div class="day" data-day="16">16</div>
+                    <div class="day" data-day="17">17</div>
+                    <div class="day" data-day="18">18</div>
+                    <div class="day" data-day="19">19</div>
+                    <div class="day" data-day="20">20</div>
+                    <div class="day" data-day="21">21</div>
+                    <div class="day" data-day="22">22</div>
+                    <div class="day" data-day="23">23</div>
+                    <div class="day" data-day="24">24</div>
+                    <div class="day" data-day="25">25</div>
+                    <div class="day" data-day="26">26</div>
+                    <div class="day" data-day="27">27</div>
+                    <div class="day" data-day="28">28</div>
+                    <div class="day" data-day="29">29</div>
+                    <div class="day" data-day="30">30</div>
+                </div>
+
+                <!-- Modal para adicionar evento -->
+                <div class="event-modal" id="event-modal">
+                    <div class="event-modal-content">
+                        <span class="close-modal">&times;</span>
+                        <h3>Adicionar Evento</h3>
+                        <input type="text" id="event-title" placeholder="Nome do Evento">
+                        <textarea id="event-desc" placeholder="Descrição do Evento"></textarea>
+                        <select id="event-type">
+                            <option value="aula">Aula</option>
+                            <option value="tarefa">Tarefa</option>
+                            <option value="lembrete">Lembrete</option>
+                        </select>
+                        <button id="save-event">Salvar</button>
+                    </div>
+                </div>
+
+                <!-- Lista de Eventos -->
+                <div class="events-list" id="events-list">
+                    <h3>Eventos do Dia Selecionado</h3>
+                    <div id="event-items"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para modal e cores de eventos -->
+    <script>
+        const days = document.querySelectorAll('.day');
+        const modal = document.getElementById('event-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const saveBtn = document.getElementById('save-event');
+        const eventItems = document.getElementById('event-items');
+        const eventTypeSelect = document.getElementById('event-type');
+
+        let selectedDay = null;
+
+        days.forEach(day => {
+            day.addEventListener('click', () => {
+                selectedDay = day.getAttribute('data-day');
+                modal.style.display = 'flex';
+            });
+        });
+
+        closeModal.addEventListener('click', () => modal.style.display = 'none');
+
+        saveBtn.addEventListener('click', () => {
+            const title = document.getElementById('event-title').value;
+            const desc = document.getElementById('event-desc').value;
+            const type = eventTypeSelect.value;
+
+            if(title) {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('event-item', type);
+                eventDiv.innerHTML = `<strong>Dia ${selectedDay}:</strong> ${title} - ${desc}`;
+                eventItems.appendChild(eventDiv);
+
+                modal.style.display = 'none';
+                document.getElementById('event-title').value = '';
+                document.getElementById('event-desc').value = '';
+            }
+        });
+
+        window.onclick = function(e) {
+            if(e.target === modal) modal.style.display = 'none';
+        };
+    </script>
+</body>
+</html>

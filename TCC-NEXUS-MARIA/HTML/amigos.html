@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Amigos</title>
+    <link rel="stylesheet" href="../CSS/amigos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2 class="menu-title">Nexus Menu</h2>
+            <ul class="menu-list">
+                <li><a href="feed.html"><i class="fas fa-compass"></i> Explorar</a></li>
+                <li><a href="amigos.html" class="active-link-item"><i class="fas fa-user-friends"></i> Amigos</a></li>
+                <li><a href="calendario.html"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+                <li><a href="salvos.html"><i class="fas fa-bookmark"></i> Salvos</a></li>
+                <li><a href="atividades.html"><i class="fas fa-running"></i> Atividades</a></li>
+                <li><a href="configuracao.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            </ul>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar amigos...">
+                </div>
+                <div class="header-logo">
+                    <span class="logo-text">NEXUS</span>
+                </div>
+                <div class="header-profile">
+                    <div class="header-profile-pic"></div>
+                </div>
+            </header>
+
+
+            <!-- Filtro de Amigos -->
+            <div class="friend-filter">
+                <label for="filter-select">Filtrar:</label>
+                <select id="filter-select">
+                    <option value="all">Todos</option>
+                    <option value="recent">Adicionados Recentemente</option>
+                    <option value="removed">Removidos</option>
+                    <option value="blocked">Bloqueados</option>
+                </select>
+            </div>
+
+            <!-- Lista de Amigos -->
+            <div class="feed-container">
+
+                <!-- Card de Amigo -->
+                <div class="friend-card recent">
+                    <div class="friend-profile-pic"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">Aisha Silva</div>
+                        <div class="friend-nick">@aishadev</div>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="btn-message" onclick="openChat('Aisha Silva','@aishadev')"><i class="fas fa-comment"></i> Mensagem</button>
+                        <button class="btn-remove" onclick="removeFriend(this)"><i class="fas fa-user-slash"></i> Remover</button>
+                    </div>
+                </div>
+
+                <div class="friend-card blocked">
+                    <div class="friend-profile-pic"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">Bruno Costa</div>
+                        <div class="friend-nick">@bruno.UX</div>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="btn-message" onclick="openChat('Bruno Costa','@bruno.UX')"><i class="fas fa-comment"></i> Mensagem</button>
+                        <button class="btn-remove" onclick="removeFriend(this)"><i class="fas fa-user-slash"></i> Remover</button>
+                    </div>
+                </div>
+
+                <div class="friend-card recent">
+                    <div class="friend-profile-pic"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">Carla Fernandes</div>
+                        <div class="friend-nick">@carlatech</div>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="btn-message" onclick="openChat('Carla Fernandes','@carlatech')"><i class="fas fa-comment"></i> Mensagem</button>
+                        <button class="btn-remove" onclick="removeFriend(this)"><i class="fas fa-user-slash"></i> Remover</button>
+                    </div>
+                </div>
+
+                <div class="friend-card">
+                    <div class="friend-profile-pic"></div>
+                    <div class="friend-info">
+                        <div class="friend-name">Diogo Alves</div>
+                        <div class="friend-nick">@diogo.moto</div>
+                    </div>
+                    <div class="friend-actions">
+                        <button class="btn-message" onclick="openChat('Diogo Alves','@diogo.moto')"><i class="fas fa-comment"></i> Mensagem</button>
+                        <button class="btn-remove" onclick="removeFriend(this)"><i class="fas fa-user-slash"></i> Remover</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redireciona para chat.html passando nome e nick do amigo
+        function openChat(name, nick) {
+            window.location.href = `chat.html?name=${encodeURIComponent(name)}&nick=${encodeURIComponent(nick)}`;
+        }
+
+        // Remove card do amigo com animação
+        function removeFriend(button) {
+            const card = button.closest('.friend-card');
+            card.style.transition = 'all 0.4s ease';
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(-100%)';
+            setTimeout(() => card.remove(), 400);
+        }
+
+        // Filtro de amigos
+        const filterSelect = document.getElementById('filter-select');
+        const friendCards = document.querySelectorAll('.friend-card');
+
+        filterSelect.addEventListener('change', () => {
+            const value = filterSelect.value;
+
+            friendCards.forEach(card => {
+                card.style.display = 'flex';
+                if (value === 'recent') {
+                    if(!card.classList.contains('recent')) card.style.display = 'none';
+                } else if (value === 'blocked') {
+                    if(!card.classList.contains('blocked')) card.style.display = 'none';
+                } else if (value === 'removed') {
+                    card.style.display = 'none';
+                } // 'all' mostra todos
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Salvos</title>
+    <link rel="stylesheet" href="../CSS/salvos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Modal Notificação */
+        .notification-modal {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 300px;
+            max-width: 90%;
+            animation: fadeIn 0.3s ease;
+        }
+        .notification-content {
+            background: rgba(30,30,30,0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .notification-content p {
+            margin: 0;
+            flex-grow: 1;
+        }
+        .notification-close {
+            cursor: pointer;
+            margin-left: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--color-purple-main);
+            transition: 0.2s;
+        }
+        .notification-close:hover { color: var(--color-purple-btn-end); }
+        @keyframes fadeIn { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+    </style>
+</head>
+<body>
+<div class="dashboard-layout">
+    <div class="sidebar">
+        <h2 class="menu-title">Nexus Menu</h2>
+        <ul class="menu-list">
+            <li><a href="feed.html"><i class="fas fa-compass"></i> Explorar</a></li>
+            <li><a href="amigos.html"><i class="fas fa-user-friends"></i> Amigos</a></li>
+            <li><a href="calendario.html"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+            <li><a href="salvos.html" class="active-link-item"><i class="fas fa-bookmark"></i> Salvos</a></li>
+            <li><a href="atividades.html"><i class="fas fa-running"></i> Atividades</a></li>
+            <li><a href="configuracao.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="main-header">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Pesquisar salvos...">
+            </div>
+            <div class="header-logo"><span class="logo-text">NEXUS</span></div>
+            <div class="header-profile">
+                <div class="header-profile-pic"></div>
+            </div>
+        </header>
+
+        <div class="feed-header">Posts Salvos</div>
+        <button id="show-deleted-btn" class="show-deleted-btn">Ver Excluídos</button>
+
+        <div class="saved-container" id="saved-container">
+            <div class="saved-card" data-id="1">
+                <div class="saved-image"></div>
+                <div class="saved-info">
+                    <h3>Como Aprender React em 2025</h3>
+                    <p>Dicas e truques para dominar React de forma prática e rápida.</p>
+                </div>
+                <i class="fas fa-trash-alt remove-icon"></i>
+            </div>
+
+            <div class="saved-card" data-id="2">
+                <div class="saved-image"></div>
+                <div class="saved-info">
+                    <h3>Design Minimalista: Guia Completo</h3>
+                    <p>Aprenda como aplicar menos elementos e mais impacto visual.</p>
+                </div>
+                <i class="fas fa-trash-alt remove-icon"></i>
+            </div>
+
+            <div class="saved-card" data-id="3">
+                <div class="saved-image"></div>
+                <div class="saved-info">
+                    <h3>Inteligência Artificial na Prática</h3>
+                    <p>Exemplos de aplicações de IA no cotidiano e mercado de trabalho.</p>
+                </div>
+                <i class="fas fa-trash-alt remove-icon"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Notificação -->
+    <div id="notification-modal" class="notification-modal">
+        <div class="notification-content">
+            <p id="notification-text"></p>
+            <span class="notification-close">&times;</span>
+        </div>
+    </div>
+</div>
+
+<script>
+const savedContainer = document.getElementById('saved-container');
+const showDeletedBtn = document.getElementById('show-deleted-btn');
+const notificationModal = document.getElementById('notification-modal');
+const notificationText = document.getElementById('notification-text');
+const notificationClose = document.querySelector('.notification-close');
+
+let deletedPosts = JSON.parse(sessionStorage.getItem('deletedPosts')) || [];
+
+// Função modal
+function showNotification(message){
+    notificationText.textContent = message;
+    notificationModal.style.display = 'flex';
+    setTimeout(()=> notificationModal.style.display='none', 3000);
+}
+notificationClose.addEventListener('click', ()=> notificationModal.style.display='none');
+
+// Função remover post
+function removePost(card){
+    const info = card.querySelector('.saved-info');
+    deletedPosts.push({
+        id: card.dataset.id,
+        title: info.querySelector('h3').innerText,
+        text: info.querySelector('p').innerText
+    });
+    sessionStorage.setItem('deletedPosts', JSON.stringify(deletedPosts));
+    card.remove();
+    showNotification('Post excluído!');
+}
+
+// Evento de clique nos cards
+savedContainer.addEventListener('click', (e)=>{
+    const card = e.target.closest('.saved-card');
+    if(!card) return;
+
+    if(e.target.classList.contains('remove-icon')){
+        removePost(card);
+    } else {
+        const info = card.querySelector('.saved-info');
+        showNotification('Visualizando post: ' + info.querySelector('h3').innerText);
+    }
+});
+
+// Botão Ver Excluídos
+showDeletedBtn.addEventListener('click', ()=>{
+    window.location.href = 'excluidos.html';
+});
+</script>
+</body>
+</html>

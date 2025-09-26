@@ -1,0 +1,335 @@
+/* --------------------------------------------------------------------------------
+   Variáveis de Cores e Estilos Globais
+   -------------------------------------------------------------------------------- */
+:root {
+    /* Cores */
+    --color-dark-gray: #121212; /* Fundo mais escuro */
+    --color-medium-gray: #202020; /* Linhas divisórias e bordas */
+    --color-light-gray: #303030; /* Fundo do input/placeholder */
+    --color-text: #ffffff;
+    --color-text-secondary: #aaaaaa; /* Cor para @arroba e texto secundário */
+    --color-link: #bb86fc; /* Cor roxa clara para links e destaque (Material Design Purple) */
+    --color-purple-btn-start: #9a67ea; /* Roxo para degradê/botões */
+    --color-purple-btn-end: #7b4ac4; 
+    --color-purple-main: #bb86fc; 
+
+    /* Glassmorphism Efeitos (Post Card) */
+    --glass-background: rgba(30, 30, 30, 0.85); 
+    --glass-border: 1px solid rgba(255, 255, 255, 0.05);
+    --glass-blur: 8px; 
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
+    
+    --font-family-primary: 'Poppins', sans-serif;
+}
+
+/* --- Estilos Globais e Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family-primary), sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Remove min-height: 100vh do body para usar 100% de altura no HTML/Layout */
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--color-dark-gray);
+    background-image: linear-gradient(135deg, #181818 0%, #0a0a0a 100%);
+    position: relative;
+    color: var(--color-text);
+    /* Impede a rolagem do body */
+    overflow: hidden; 
+}
+
+/* --------------------------------------------------------------------------------
+   Layout Principal (Dashboard)
+   -------------------------------------------------------------------------------- */
+
+.dashboard-layout {
+    display: flex;
+    /* Define a altura exata do viewport */
+    height: 100vh;
+    width: 100%;
+    background-color: transparent;
+    /* Garante que o menu lateral e o conteúdo principal usem o espaço corretamente */
+}
+
+/* Sidebar (Menu Lateral) */
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    background: var(--glass-background); 
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-right: var(--glass-border);
+    color: var(--color-text);
+    box-shadow: var(--shadow);
+    /* Remove position: sticky, pois agora o contêiner pai tem 100vh */
+    position: relative;
+    top: 0;
+    /* O menu deve preencher toda a altura e rolar internamente se for muito longo */
+    overflow-y: auto; 
+    flex-shrink: 0; 
+}
+
+.menu-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--color-link);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Menu Lateral: Efeitos Hover e Ativo */
+.menu-list {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-list li a {
+    padding: 12px 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    color: var(--color-text-secondary); 
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.menu-list li a:hover {
+    background-color: rgba(187, 134, 252, 0.1); /* Roxo claro com transparência */
+    color: var(--color-text); 
+}
+
+.menu-list li .active-link-item {
+    background-color: var(--color-purple-btn-end); /* Roxo sólido */
+    color: var(--color-text) !important; 
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(123, 74, 196, 0.4);
+}
+
+.menu-list i {
+    margin-right: 15px;
+    font-size: 1.1em;
+}
+
+/* Conteúdo Principal (Feed) */
+.main-content {
+    flex-grow: 1;
+    padding: 20px 40px; 
+    /* Adiciona a rolagem vertical APENAS ao conteúdo principal */
+    overflow-y: auto; 
+    max-width: calc(100% - 250px);
+    margin: 0 auto; 
+    padding-top: 80px; /* Espaço para o cabeçalho fixo */
+    
+    /* Garante que o main-content ocupe a altura restante e possa rolar */
+    height: 100vh;
+}
+
+/* --------------------------------------------------------------------------------
+   Cabeçalho Moderno (Header)
+   -------------------------------------------------------------------------------- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; 
+    top: 0;
+    left: 250px; 
+    /* Ajusta 'right' para se estender até a borda correta do feed */
+    width: calc(100% - 250px);
+    height: 60px;
+    padding: 0 40px;
+    z-index: 100;
+    background-color: rgba(18, 18, 18, 0.95); /* Fundo quase opaco */
+    border-bottom: 1px solid var(--color-medium-gray);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.header-logo {
+    /* Centralização usando posição absoluta no meio do espaço disponível */
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-purple-main);
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Campo de Pesquisa (Esquerda) */
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-medium-gray);
+    padding: 8px 15px;
+    border-radius: 20px;
+    width: 300px;
+    max-width: 40%;
+}
+
+.search-container i {
+    color: var(--color-text-secondary);
+    margin-right: 10px;
+}
+
+.search-container input {
+    border: none;
+    background: transparent;
+    color: var(--color-text);
+    outline: none;
+    width: 100%;
+}
+
+/* Perfil (Direita) */
+.header-profile {
+    margin-left: auto; 
+}
+
+.header-profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-purple-main); /* Placeholder de Perfil */
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.header-profile-pic:hover {
+    transform: scale(1.05);
+}
+
+.feed-header {
+    display: none; /* Removido, pois o main-header assume a função */
+}
+
+
+/* --------------------------------------------------------------------------------
+   Estilos dos Posts (Feed)
+   -------------------------------------------------------------------------------- */
+.post-card {
+    background: var(--glass-background); 
+    border: var(--glass-border);
+    border-radius: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--color-light-gray); 
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.post-user-info {
+    text-align: left;
+}
+
+.post-username {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.post-nicktag {
+    font-size: 0.8em;
+    color: var(--color-text-secondary); 
+}
+
+.post-content p {
+    color: var(--color-text);
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.post-image-container {
+    width: 100%;
+    max-height: 400px; 
+    overflow: hidden;
+    border-radius: 8px;
+    margin-top: 10px;
+    background-color: var(--color-light-gray); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    
+.image-placeholder {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+}
+
+/* Área de Comentário */
+.comment-input-area {
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid var(--color-medium-gray);
+    margin-top: 15px;
+}
+
+.current-user-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-light-gray); 
+    margin-right: 15px; 
+    flex-shrink: 0;
+}
+
+.comment-input-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-light-gray); 
+    border-radius: 20px;
+    padding: 8px 15px;
+}
+
+.comment-input-wrapper input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    color: var(--color-text);
+    padding: 5px 0;
+    outline: none;
+    margin-right: 10px; 
+}
+
+.comment-icons {
+    display: flex;
+    gap: 10px;
+    color: var(--color-text-secondary);
+    font-size: 1.1em;
+}
+
+.comment-icons i {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.comment-icons i:hover {
+    color: var(--color-link);
+}

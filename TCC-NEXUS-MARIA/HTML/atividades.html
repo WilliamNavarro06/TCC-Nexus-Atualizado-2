@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Atividades</title>
+    <link rel="stylesheet" href="../CSS/atividades.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Filtro */
+        .filter-container {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-container label {
+            font-weight: 600;
+        }
+
+        .filter-container select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2 class="menu-title">Nexus Menu</h2>
+            <ul class="menu-list">
+                <li><a href="explorar.html"><i class="fas fa-compass"></i> Explorar</a></li>
+                <li><a href="amigos.html"><i class="fas fa-user-friends"></i> Amigos</a></li>
+                <li><a href="calendario.html"><i class="fas fa-calendar-alt"></i> Calendário</a></li>
+                <li><a href="salvos.html"><i class="fas fa-bookmark"></i> Salvos</a></li>
+                <li><a href="atividades.html" class="active-link-item"><i class="fas fa-running"></i> Atividades</a></li>
+                <li><a href="configuracao.html"><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Pesquisar atividades...">
+                </div>
+                <div class="header-logo">
+                    <span class="logo-text">NEXUS</span>
+                </div>
+                <div class="header-profile">
+                    <div class="header-profile-pic"></div>
+                </div>
+            </header>
+
+            <div class="feed-header">Atividades</div>
+
+            <!-- Filtro -->
+            <div class="filter-container">
+                <label for="filter">Filtrar:</label>
+                <select id="filter">
+                    <option value="all">Todas</option>
+                    <option value="pending">Pendentes</option>
+                    <option value="completed">Concluídas</option>
+                </select>
+            </div>
+
+            <div class="activities-container">
+
+                <!-- Atividade 1 -->
+                <div class="activity-card" data-status="completed">
+                    <div class="activity-left">
+                        <div class="activity-tag completed">Concluída</div>
+                        <h3>Estudo de Matemática</h3>
+                        <p>Resolver exercícios de álgebra e geometria.</p>
+                        <div class="activity-meta">
+                            <span class="activity-date"><i class="far fa-calendar-alt"></i> 26/09/2025</span>
+                            <span class="activity-comments"><i class="far fa-comment"></i> 3 comentários</span>
+                        </div>
+                    </div>
+                    <div class="activity-actions">
+                        <i class="fas fa-check-circle mark-complete" title="Marcar como concluída"></i>
+                        <i class="fas fa-edit" title="Editar atividade"></i>
+                        <i class="fas fa-trash-alt remove-activity" title="Remover atividade"></i>
+                    </div>
+                </div>
+
+                <!-- Atividade 2 -->
+                <div class="activity-card" data-status="pending">
+                    <div class="activity-left">
+                        <div class="activity-tag pending">Pendente</div>
+                        <h3>Redação de Português</h3>
+                        <p>Escrever texto argumentativo sobre tecnologia na educação.</p>
+                        <div class="activity-meta">
+                            <span class="activity-date"><i class="far fa-calendar-alt"></i> 28/09/2025</span>
+                            <span class="activity-comments"><i class="far fa-comment"></i> 0 comentários</span>
+                        </div>
+                    </div>
+                    <div class="activity-actions">
+                        <i class="fas fa-check-circle mark-complete" title="Marcar como concluída"></i>
+                        <i class="fas fa-edit" title="Editar atividade"></i>
+                        <i class="fas fa-trash-alt remove-activity" title="Remover atividade"></i>
+                    </div>
+                </div>
+
+                <!-- Atividade 3 -->
+                <div class="activity-card" data-status="pending">
+                    <div class="activity-left">
+                        <div class="activity-tag pending">Pendente</div>
+                        <h3>Projeto de História</h3>
+                        <p>Montar linha do tempo sobre Revolução Industrial.</p>
+                        <div class="activity-meta">
+                            <span class="activity-date"><i class="far fa-calendar-alt"></i> 30/09/2025</span>
+                            <span class="activity-comments"><i class="far fa-comment"></i> 1 comentário</span>
+                        </div>
+                    </div>
+                    <div class="activity-actions">
+                        <i class="fas fa-check-circle mark-complete" title="Marcar como concluída"></i>
+                        <i class="fas fa-edit" title="Editar atividade"></i>
+                        <i class="fas fa-trash-alt remove-activity" title="Remover atividade"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JS embutido -->
+    <script>
+        // Filtro
+        const filterSelect = document.getElementById('filter');
+        const activities = document.querySelectorAll('.activity-card');
+
+        filterSelect.addEventListener('change', () => {
+            const value = filterSelect.value;
+            activities.forEach(activity => {
+                if (value === 'all' || activity.dataset.status === value) {
+                    activity.style.display = 'flex';
+                } else {
+                    activity.style.display = 'none';
+                }
+            });
+        });
+
+        // Remover atividade
+        document.querySelectorAll('.remove-activity').forEach(button => {
+            button.addEventListener('click', function () {
+                const activity = this.closest('.activity-card');
+                activity.remove();
+            });
+        });
+
+        // Marcar como concluída
+        document.querySelectorAll('.mark-complete').forEach(button => {
+            button.addEventListener('click', function () {
+                const activity = this.closest('.activity-card');
+                activity.dataset.status = "completed";
+                const tag = activity.querySelector('.activity-tag');
+                tag.textContent = "Concluída";
+                tag.classList.remove("pending");
+                tag.classList.add("completed");
+            });
+        });
+    </script>
+</body>
+</html>

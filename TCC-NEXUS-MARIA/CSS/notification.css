@@ -1,0 +1,43 @@
+/* Modal Notificação */
+.notification-modal {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px;
+    max-width: 90%;
+    animation: fadeIn 0.3s ease;
+}
+
+.notification-content {
+    background: rgba(30,30,30,0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.95em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-content p {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.notification-close {
+    cursor: pointer;
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: var(--color-purple-main);
+    transition: 0.2s;
+}
+
+.notification-close:hover {
+    color: var(--color-purple-btn-end);
+}
